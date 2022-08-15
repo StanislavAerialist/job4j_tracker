@@ -4,23 +4,23 @@ public class UserStore {
 
     public static User findUser(User[] users, String login) throws UserNotFoundException {
         User user = null;
-        for (int i = 0; i < users.length; i++) {
-            if (login.equals(users[i].getUsername())) {
-                user = users[i];
+        for (User u : users) {
+            if (login.equals(u.getUsername())) {
+                user = u;
+                break;
             }
             }
         if (user == null) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("User not found.");
         }
         return user;
     }
 
     public static boolean validate(User user) throws UserInvalidException {
-        boolean rsl = user.getUsername().length() >= 3 && user.isValid();
-         if (!rsl) {
-             throw new UserInvalidException();
+         if (!(user.getUsername().length() >= 3 && user.isValid())) {
+             throw new UserInvalidException("Invalid user.");
          }
-        return rsl;
+        return user.getUsername().length() >= 3 && user.isValid();
     }
 
     public static void main(String[] args) {
@@ -32,10 +32,10 @@ public class UserStore {
             if (validate(user)) {
                 System.out.println("This user has an access");
             }
-        } catch (UserInvalidException e) {
-            System.out.println("Invalid user.");
-        } catch (UserNotFoundException e) {
-            System.out.println("User not found.");
+        } catch (UserInvalidException uie) {
+            uie.printStackTrace();
+        } catch (UserNotFoundException unfe) {
+            unfe.printStackTrace();
         }
     }
 }
