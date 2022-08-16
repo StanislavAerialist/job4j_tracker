@@ -28,18 +28,22 @@ public class ValidateInputTest {
     }
 
     @Test
-    public void whenValidInput4Times() {
+    public void whenValidInput3Times() {
         Output out = new StubOutput();
         Input in = new StubInput(
-                new String[] {"2", "2", "2", "2"}
+                new String[] {"2", "3", "1"}
         );
         ValidateInput input = new ValidateInput(out, in);
         int selected = input.askInt("Enter menu:");
         assertThat(selected).isEqualTo(2);
+        selected = input.askInt("Enter menu:");
+        assertThat(selected).isEqualTo(3);
+        selected = input.askInt("Enter menu:");
+        assertThat(selected).isEqualTo(1);
     }
 
     @Test
-    public void whenInvalidInputWithMinus() {
+    public void whenValidInputWithMinus() {
         Output out = new StubOutput();
         Input in = new StubInput(
                 new String[] {"-1"}
