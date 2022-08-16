@@ -43,7 +43,7 @@ public class ValidateInputTest {
     }
 
     @Test
-    public void whenValidInputWithMinus() {
+    public void whenNegativeInput() {
         Output out = new StubOutput();
         Input in = new StubInput(
                 new String[] {"-1"}
