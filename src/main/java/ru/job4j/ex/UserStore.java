@@ -9,7 +9,7 @@ public class UserStore {
                 user = u;
                 break;
             }
-            }
+        }
         if (user == null) {
             throw new UserNotFoundException("User not found.");
         }
@@ -17,10 +17,10 @@ public class UserStore {
     }
 
     public static boolean validate(User user) throws UserInvalidException {
-         if (!(user.getUsername().length() >= 3 && user.isValid())) {
+         if (!user.isValid() || user.getUsername().length() < 3) {
              throw new UserInvalidException("Invalid user.");
          }
-        return user.getUsername().length() >= 3 && user.isValid();
+        return true;
     }
 
     public static void main(String[] args) {
