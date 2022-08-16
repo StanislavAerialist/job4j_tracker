@@ -6,7 +6,7 @@ public class PasswordValidator {
             throw new IllegalArgumentException("Пароль не может быть null!");
         }
         if (password.length() < 8 || password.length() > 32) {
-            return "Длина пароля находится в диапазоне [8, 32]";
+            throw new IllegalArgumentException("Длина пароля находится в диапазоне [8, 32]");
         }
         String[] simples = new String[]{"qwerty", "12345", "password", "admin", "user"};
         char[] pass = password.toCharArray();
@@ -28,27 +28,31 @@ public class PasswordValidator {
             if (!Character.isLetterOrDigit(pass[i])) {
                 spec = true;
             }
+            if (lower && uper && num && spec) {
+                break;
+            }
         }
         for (int i = 0; i < simples.length; i++) {
             String lowerPass = password.toLowerCase();
             if (lowerPass.contains(simples[i])) {
                 simple = false;
+                break;
             }
         }
         if (!uper) {
-            return "Пароль содержит хотя бы один символ в верхнем регистре";
+            throw new IllegalArgumentException("Пароль содержит хотя бы один символ в верхнем регистре");
         }
         if (!lower) {
-            return "Пароль содержит хотя бы один символ в нижнем регистре";
+            throw new IllegalArgumentException("Пароль содержит хотя бы один символ в нижнем регистре");
         }
         if (!num) {
-            return "Пароль содержит хотя бы одну цифру";
+            throw new IllegalArgumentException("Пароль содержит хотя бы одну цифру");
         }
         if (!spec) {
-            return "Пароль содержит хотя бы один спец. символ (не цифра и не буква)";
+            throw new IllegalArgumentException("Пароль содержит хотя бы один спец. символ (не цифра и не буква)");
         }
         if (!simple) {
-            return "Пароль не содержит подстрок без учета регистра: qwerty, 12345, password, admin, user.";
+            throw new IllegalArgumentException("Пароль не содержит подстрок без учета регистра: qwerty, 12345, password, admin, user.");
         }
     return "Успешный успех";
     }
