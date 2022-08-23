@@ -20,15 +20,15 @@ public class Tracker {
     }
 
     public List<Item> findAll() {
-        return items;
+        return List.copyOf(items);
     }
 
     public List<Item> findByName(String key) {
         List<Item> rsl = new ArrayList<>();
      int count = 0;
-     for (int i = 0; i < items.size(); i++) {
-         if (items.get(i).getName().equals(key)) {
-             rsl.add(count, items.get(i));
+     for (Item i : items) {
+         if (i.getName().equals(key)) {
+             rsl.add(count, i);
              count++;
          }
      }
