@@ -17,17 +17,15 @@ public class AnalyzeByMap {
 
     public static List<Label> averageScoreByPupil(List<Pupil> pupils) {
         List<Label> rsl = new ArrayList<>();
-        double sumP = 0;
-        double countP = 0;
         for (Pupil p : pupils) {
+            double sumP = 0;
+            double countP = 0;
             for (Subject s : p.subjects()) {
                 sumP += s.score();
                 countP++;
             }
             Label label = new Label(p.name(), sumP / countP);
             rsl.add(label);
-            sumP = 0;
-            countP = 0;
         }
         return rsl;
     }
@@ -38,18 +36,11 @@ public class AnalyzeByMap {
         Map<String, Integer> temp = new LinkedHashMap<>();
         for (Pupil p : pupils) {
             for (Subject s : p.subjects()) {
-                temp.put(s.name(), 0);
+                temp.merge(s.name(), s.score(), Integer::sum);
             }
-            break;
+            count++;
         }
-        for (Pupil p : pupils) {
-            for (Subject s : p.subjects()) {
-                for (String name : temp.keySet()) {
-                    temp.put(name, temp.get(name) + s.score());
-                }
-                count++;
-            }
-        }
+
         for (Map.Entry<String, Integer> entry : temp.entrySet()) {
             Label label = new Label(entry.getKey(), entry.getValue() / count);
             rsl.add(label);
@@ -77,13 +68,7 @@ public class AnalyzeByMap {
         Map<String, Integer> temp = new LinkedHashMap<>();
         for (Pupil p : pupils) {
             for (Subject s : p.subjects()) {
-                temp.put(s.name(), 0);
-            }
-            break;
-        }
-        for (Pupil p : pupils) {
-            for (Subject s : p.subjects()) {
-                    temp.put(s.name(), temp.get(s.name()) + s.score());
+                temp.merge(s.name(), s.score(), Integer::sum);
             }
         }
         for (Map.Entry<String, Integer> entry : temp.entrySet()) {
