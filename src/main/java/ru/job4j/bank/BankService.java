@@ -2,7 +2,6 @@ package ru.job4j.bank;
 
 import ru.job4j.bank.Account;
 import ru.job4j.bank.User;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
