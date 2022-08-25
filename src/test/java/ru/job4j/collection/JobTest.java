@@ -6,13 +6,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JobTest {
     @Test
-    public void whenCompatorByNameAndPrority() {
+    public void whenComparatorDescNameAndDescPriority() {
         Comparator<Job> cmpNamePriority = new JobDescByName().thenComparing(new JobDescByPriority());
         int rsl = cmpNamePriority.compare(
-                new Job("Impl task", 0),
-                new Job("Fix bug", 1)
+                new Job("AAA", 0),
+                new Job("AAA", 1)
         );
-        assertThat(rsl).isLessThan(0);
+        assertThat(rsl).isGreaterThan(0);
     }
 
     @Test
@@ -22,7 +22,7 @@ public class JobTest {
                 new Job("AAA", 12),
                 new Job("BBB", 15)
         );
-        assertThat(rsl).isGreaterThan(0);
+        assertThat(rsl).isLessThan(0);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class JobTest {
                 new Job("BBB", 12),
                 new Job("AAA", 15)
         );
-        assertThat(rsl).isLessThan(0);
+        assertThat(rsl).isGreaterThan(0);
     }
 
     @Test
@@ -110,8 +110,8 @@ public class JobTest {
         Comparator<Job> cmpNamePriority = new JobAscByName().thenComparing(new JobAscByPriority());
         int rsl = cmpNamePriority.compare(
                 new Job("AAA", 0),
-                new Job("BBB", 1)
+                new Job("AAA", 1)
         );
-        assertThat(rsl).isGreaterThan(0);
+        assertThat(rsl).isLessThan(0);
     }
 }
