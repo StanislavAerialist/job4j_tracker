@@ -1,12 +1,8 @@
 package ru.job4j.lambda;
 
-import ru.job4j.collection.StringCompare;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 public class AttachmentSort {
     public static void main(String[] args) {
@@ -29,8 +25,7 @@ public class AttachmentSort {
         Comparator<Attachment> comparator2 =  new Comparator<Attachment>() {
             @Override
             public int compare(Attachment left, Attachment right) {
-                StringCompare compare = new StringCompare();
-                return compare.compare(left.getName(), right.getName());
+                return left.getName().compareTo(right.getName());
             }
         };
     }
