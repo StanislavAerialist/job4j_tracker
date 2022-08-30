@@ -11,7 +11,7 @@ public class DoubleLoop {
         V_6, V_7, V_8
     }
 
-    public class Card {
+    public static class Card {
         private Suit suit;
         private Value value;
 
@@ -24,6 +24,7 @@ public class DoubleLoop {
     public static void main(String[] args) {
         Stream.of(Suit.values())
                 .flatMap(suit -> Stream.of(Value.values())
-                        .map(Card -> suit + " " + Card));
+                        .map(v -> new Card(suit, v)));
+
     }
 }
