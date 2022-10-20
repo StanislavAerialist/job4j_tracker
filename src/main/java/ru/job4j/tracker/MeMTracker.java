@@ -1,10 +1,9 @@
 package ru.job4j.tracker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Tracker {
+public class MeMTracker implements Store {
     private final List<Item> items = new ArrayList<>();
     private int ids = 1;
 
