@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -59,4 +61,57 @@ public class SqlTrackerTest {
         assertThat(tracker.findById(item.getId()), is(item));
     }
 
+    @Test
+    public void whenFindAllTest() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item[] items = {
+                new Item("item1"),
+                new Item("item1"),
+                new Item("item1")
+        };
+        tracker.add(items[0]);
+        tracker.add(items[1]);
+        tracker.add(items[2]);
+        List<Item> rsl = tracker.findAll();
+        Assertions.assertThat(rsl).hasSameElementsAs(Arrays.asList(items));
+    }
+
+    @Test
+    public void whenDeleteItemIsTrue() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item = new Item("item1");
+        tracker.add(item);
+        Assertions.assertThat(tracker.delete(item.getId())).isTrue();
+        Assertions.assertThat(tracker.findById(item.getId())).isNull();
+    }
+
+    @Test
+    public void whenReplaceItemIsTrue() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = new Item("item1");
+        Item item2 = new Item("item2");
+        tracker.add(item1);
+        Assertions.assertThat(tracker.replace(item1.getId(), item2)).isTrue();
+        Assertions.assertThat(tracker.findById(item1.getId()).getName()).isEqualTo("item2");
+    }
+
+    @Test
+    public void whenAddItemTest() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = new Item("item1");
+        Assertions.assertThat(tracker.add(item1)).isEqualTo(item1);
+    }
+
+    @Test
+    public void whenFindByNameTest() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = new Item("item1");
+        Item item2 = new Item("item1");
+        Item item3 = new Item("item3");
+        tracker.add(item1);
+        tracker.add(item2);
+        tracker.add(item3);
+        List<Item> rsl = tracker.findByName("item1");
+        Assertions.assertThat(rsl).containsOnly(item1, item2);
+    }
 }
