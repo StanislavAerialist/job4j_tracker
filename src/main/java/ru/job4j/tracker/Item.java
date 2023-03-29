@@ -12,12 +12,17 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Integer id;
+
     @NonNull
+    @EqualsAndHashCode.Include
     private String name;
+
     private LocalDateTime created = LocalDateTime.now();
 }
