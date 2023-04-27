@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.hamcrest.core.IsNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -47,47 +48,38 @@ class HbmTrackerTest {
     @Test
     public void whenDeleteItemThenNull() throws Exception {
         try (var tracker = new HbmTracker()) {
-            Item item = new Item("item");
-            tracker.add(item);
-            boolean result = tracker.delete(item.getId());
-            assertThat(result, is(true));
-            assertThat(tracker.findById(item.getId()), is(nullValue()));
+            Item item = tracker.add(new Item("item"));
+            int id = item.getId();
+            tracker.delete(id);
+            assertThat(tracker.findById(id), is(IsNull.nullValue()));
         }
     }
 
     @Test
     public void whenReplaceItem1ThenItem2() throws Exception {
         try (var tracker = new HbmTracker()) {
-            Item item1 = new Item("item1");
-            Item item2 = new Item("item2");
-            tracker.add(item1);
-            boolean result = tracker.replace(item1.getId(), item2);
-            assertThat(result, is(true));
-            assertThat(tracker.findById(item1.getId()).getName(), is(item2.getName()));
+            Item item1 = tracker.add(new Item("item1"));
+            int id = item1.getId();
+            Item item2 = tracker.add(new Item("item2"));
+            tracker.replace(id, item2);
+            assertThat(tracker.findById(id).getName(), is("item2"));
         }
     }
 
     @Test
     public void whenFindAllThenList() throws Exception {
         try (var tracker = new HbmTracker()) {
-            Item item1 = new Item("item1");
-            Item item2 = new Item("item2");
-            tracker.add(item1);
-            tracker.add(item2);
-            List<Item> result = tracker.findAll();
-            assertThat(result, is(List.of(item1, item2)));
+            Item item1 = tracker.add(new Item("item1"));
+            Item item2 = tracker.add(new Item("item2"));
+            assertThat(tracker.findAll(), is(List.of(item1, item2)));
         }
     }
 
     @Test
     public void whenFindByNameThenList() throws Exception {
         try (var tracker = new HbmTracker()) {
-            Item item1 = new Item("item1");
-            Item item2 = new Item("item2");
-            tracker.add(item1);
-            tracker.add(item2);
-            List<Item> result = tracker.findByName("item2");
-            assertThat(result, is(List.of(item2)));
+            Item item1 = tracker.add(new Item("item1"));
+            assertThat(tracker.findByName(item1.getName()), is(List.of(item1)));
         }
     }
 }
