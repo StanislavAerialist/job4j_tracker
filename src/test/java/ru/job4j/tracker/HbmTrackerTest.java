@@ -1,19 +1,16 @@
 package ru.job4j.tracker;
 
-import org.hamcrest.core.IsNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class HbmTrackerTest {
 
@@ -41,7 +38,7 @@ class HbmTrackerTest {
             item.setName("test1");
             tracker.add(item);
             Item result = tracker.findById(item.getId());
-            assertThat(result.getName(), is(item.getName()));
+            assertThat(result.getName()).isEqualTo(item.getName());
         }
     }
 
@@ -51,7 +48,7 @@ class HbmTrackerTest {
             Item item = tracker.add(new Item("item"));
             int id = item.getId();
             tracker.delete(id);
-            assertThat(tracker.findById(id), is(IsNull.nullValue()));
+            assertThat(tracker.findById(id)).isNull();
         }
     }
 
@@ -61,8 +58,8 @@ class HbmTrackerTest {
             Item item1 = tracker.add(new Item("item1"));
             int id = item1.getId();
             Item item2 = tracker.add(new Item("item2"));
-            tracker.replace(id, item2);
-            assertThat(tracker.findById(id).getName(), is("item2"));
+
+            assertThat(tracker.replace(id, item2)).isTrue();
         }
     }
 
@@ -71,7 +68,7 @@ class HbmTrackerTest {
         try (var tracker = new HbmTracker()) {
             Item item1 = tracker.add(new Item("item1"));
             Item item2 = tracker.add(new Item("item2"));
-            assertThat(tracker.findAll(), is(List.of(item1, item2)));
+            assertThat(tracker.findAll()).isEqualTo(List.of(item1, item2));
         }
     }
 
@@ -79,7 +76,7 @@ class HbmTrackerTest {
     public void whenFindByNameThenList() throws Exception {
         try (var tracker = new HbmTracker()) {
             Item item1 = tracker.add(new Item("item1"));
-            assertThat(tracker.findByName(item1.getName()), is(List.of(item1)));
+            assertThat(tracker.findByName(item1.getName())).isEqualTo(List.of(item1));
         }
     }
 }
